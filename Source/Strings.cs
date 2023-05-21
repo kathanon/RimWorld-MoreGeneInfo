@@ -11,6 +11,8 @@ namespace MoreGeneInfo {
         public const string ID = "kathanon.MoreGeneInfo";
         public const string Name = "More Gene Information";
         
+        public const string QueueTag = ID + ".queue";
+
         public static readonly string ForPawn = "Create for pawn:";
 
         public static readonly string None = "(" + "NoneLower".Translate() + ")";

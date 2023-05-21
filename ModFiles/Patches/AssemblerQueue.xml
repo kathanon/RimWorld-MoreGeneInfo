@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  
+  <Operation Class="PatchOperationAdd" MayRequire="ludeon.rimworld.biotech">
+    <xpath>Defs/ThingDef[defName="GeneAssembler"]</xpath>
+    <value>
+      <inspectorTabs>
+        <li>MoreGeneInfo.AssemblerQueueInspectTab</li>
+      </inspectorTabs>
+    </value>
+  </Operation>
+  
+</Patch>

@@ -62,18 +62,23 @@
   </ItemGroup>
   <!-- Project files -->
   <ItemGroup>
+    <Compile Include="AssemblerQueueInspectTab.cs" />
+    <Compile Include="AssemblerQueues.cs" />
     <Compile Include="BiostatFilter.cs" />
     <Compile Include="DoPatch.cs" />
     <Compile Include="Patch_AssemblerInspect.cs" />
     <Compile Include="Patch_ForPawn.cs" />
     <Compile Include="Patch_GeneDisplay.cs" />
+    <Compile Include="Patch_MetabolismPrediction.cs" />
     <Compile Include="Patch_StatsFilter.cs" />
     <Compile Include="Patch_Xenogerm.cs" />
+    <Compile Include="Patch_AssemblerQueue.cs" />
     <Compile Include="Strings.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Textures.cs" />
     <Compile Include="Util.cs" />
+    <Compile Include="XenogermBill.cs" />
   </ItemGroup>
   <!-- Include ModFiles -->
   <ItemGroup>
