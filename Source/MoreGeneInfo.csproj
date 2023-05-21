@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="BiostatFilter.cs" />
     <Compile Include="DoPatch.cs" />
+    <Compile Include="GeneTags.cs" />
     <Compile Include="Patch_AssemblerInspect.cs" />
     <Compile Include="Patch_ForPawn.cs" />
     <Compile Include="Patch_GeneDisplay.cs" />

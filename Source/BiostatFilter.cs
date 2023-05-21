@@ -24,7 +24,7 @@ public abstract class BiostatFilter {
         MatchNone, MatchLess, MatchEqual, MatchGreater 
     };
     private static readonly Texture2D[] CompIcons = { 
-        Textures.None, Textures.Less, Textures.Equals, Textures.Greater
+        Textures.None, Textures.Less, Textures.Equal, Textures.Greater
     };
     private static readonly Color fadedColor = new(1f, 1f, 1f, 0.5f);
 
