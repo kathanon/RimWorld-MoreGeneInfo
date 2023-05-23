@@ -317,11 +317,11 @@ public static class Patch_ForPawn {
         overriddenGenes.Clear();
         if (pawn != null && pawn.genes != null) {
             var selected = Traverse.Create(dialog).Property<List<GeneDef>>("SelectedGenes").Value;
-            var genes = pawn.genes.GenesListForReading
+            var genes = pawn.genes.Endogenes
                 .Select(x => x.def);
-            overriddenGenes.AddRange(genes.Where(selected.Contains));
+            overriddenGenes.AddRange(genes.Where(endo => selected.Any(sel => sel.ConflictsWith(endo))));
             pawnMetabolism = genes
-                .Where(x => !selected.Contains(x))
+                .Where(x => !overriddenGenes.Contains(x))
                 .Sum(x => x.biostatMet);
         } else {
             pawnMetabolism = 0;
