@@ -33,6 +33,9 @@
     <Reference Include="Assembly-CSharp" Private="False">
       <HintPath>$(RimWorldDlls)\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Numbers">
+      <HintPath>G:\Steam\steamapps\workshop\content\294100\1414302321\1.4\Assemblies\Numbers.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule" Private="False">
       <HintPath>$(RimWorldDlls)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -65,11 +68,14 @@
     <Compile Include="BiostatFilter.cs" />
     <Compile Include="DoPatch.cs" />
     <Compile Include="GeneTags.cs" />
+    <Compile Include="Integration_Numbers.cs" />
     <Compile Include="Patch_AssemblerInspect.cs" />
     <Compile Include="Patch_ForPawn.cs" />
     <Compile Include="Patch_GeneDisplay.cs" />
+    <Compile Include="Patch_MetabolismPrediction.cs" />
     <Compile Include="Patch_StatsFilter.cs" />
     <Compile Include="Patch_Xenogerm.cs" />
+    <Compile Include="PawnColumnWorker_TaggedGenes.cs" />
     <Compile Include="Strings.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

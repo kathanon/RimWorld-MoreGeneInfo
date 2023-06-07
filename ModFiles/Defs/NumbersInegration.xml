@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <PawnColumnDef>
+    <defName>kathanon_MoreGeneInfo_TaggedGenes</defName>
+    <workerClass>MoreGeneInfo.PawnColumnWorker_TaggedGenes</workerClass>
+    <sortable>true</sortable>
+    <label>Tagged Endogenes</label>
+  </PawnColumnDef>
+
+  </Defs>
