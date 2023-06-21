@@ -1,6 +1,7 @@
 ﻿using RimWorld;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Policy;
@@ -107,16 +108,10 @@ public class GeneTags : IExposable {
         }
     }
 
-    public static void DoReverseIcons(Rect r, Pawn pawn) {
-        Widgets.BeginGroup(r);
-
+    public static void DoReverseIcons(Rect r, Pawn pawn, List<Pawn> listedPawns) {
         var genes = pawn.genes;
         string name = pawn.LabelShortCap;
-        var tags = reverse
-            .OrderBy(x => x.Key)
-            .Select(x => x.Value);
-        var visible = tags
-            .Where(x => x.Show);
+
         Rect icon = new(
             ReverseOuterMargin,
             (r.height - ReverseIconSize) / 2,
@@ -129,7 +124,8 @@ public class GeneTags : IExposable {
             ReverseTagSize);
 
         bool hit = false;
-        foreach (var tag in visible) {
+        Widgets.BeginGroup(r);
+        foreach (var tag in VisibleReverseTags) {
             Graphics.DrawTexture(tagIcon, tag.Icon);
             tagIcon.StepX(ReverseIconMargin);
             icon.x = tagIcon.x;
@@ -168,11 +164,22 @@ public class GeneTags : IExposable {
                     break;
 
                 case 1:
-                    var options = tags.Select(x => x.MenuOption).ToList();
+                    var options = ReverseTags.Select(x => x.MenuOption).ToList();
+                    options.Add(new FloatMenuOption("Export...", () => Export(listedPawns)));
                     Find.WindowStack.Add(new FloatMenu(options));
                     break;
             }
         }
+    }
+
+    private static IEnumerable<ReverseList> VisibleReverseTags 
+        => ReverseTags.Where(x => x.Show);
+
+    private static IEnumerable<ReverseList> ReverseTags 
+        => reverse.OrderBy(x => x.Key).Select(x => x.Value);
+
+    private static void Export(List<Pawn> listedPawns) {
+        Find.WindowStack.Add(new TagsExportDialog(listedPawns));
     }
 
     public static int ReverseIconsWidth()
@@ -322,6 +329,85 @@ public class GeneTags : IExposable {
             public override bool DoGUI(Rect rect, bool colonistOrdering, FloatMenu floatMenu) {
                 base.DoGUI(rect, colonistOrdering, floatMenu);
                 return false;
+            }
+        }
+    }
+
+    private class TagsExportDialog : Window {
+        private List<Pawn> listedPawns;
+        private string path = 
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "genes.csv");
+
+        public TagsExportDialog(List<Pawn> listedPawns) {
+            this.listedPawns = listedPawns;
+            absorbInputAroundWindow = true;
+        }
+
+        public override Vector2 InitialSize => new(500f, 150f);
+
+        public override void DoWindowContents(Rect inRect) {
+            Text.Font = GameFont.Medium;
+            Widgets.Label(inRect, "Export tagged endogenes to CSV");
+            inRect.yMin += Text.LineHeight + 8f;
+            Text.Font = GameFont.Small;
+
+            var row = inRect.TopPartPixels(Text.LineHeight + 8f);
+            Text.Anchor = TextAnchor.MiddleLeft;
+            string label = "Path:";
+            Widgets.Label(row, label);
+            row.xMin += Text.CalcSize(label).x + 8f;
+            path = Widgets.TextField(row, path);
+
+            row.StepY(8f);
+            row.height += 8f;
+            var button = row.RightPartPixels(CloseButSize.x);
+            if (Widgets.ButtonText(button, "Export")) {
+                Export();
+                Close();
+            }
+            button.x -= button.width + 16f;
+            if (Widgets.ButtonText(button, "Cancel")) {
+                Close();
+            }
+            Text.Anchor = TextAnchor.UpperLeft;
+        }
+
+        private void Export() {
+            bool first = true;
+            var file = new StreamWriter(File.Create(path));
+            Cell("Pawn");
+
+            var genes = VisibleReverseTags.SelectMany(x => x.Genes).Distinct().ToList();
+            foreach (var gene in genes) {
+                Cell(gene.LabelCap);
+            }
+            EndRow();
+            
+            foreach (var pawn in listedPawns) {
+                Cell(pawn.LabelShortCap);
+                foreach (var gene in genes) {
+                    Cell(pawn.genes.HasEndogene(gene) ? "X" : "");
+                }
+                EndRow();
+            }
+
+            file.Close();
+
+            void Cell(string content) {
+                if (!first) {
+                    file.Write(',');
+                }
+                first = false;
+
+                bool quote = content.Contains(',');
+                if (quote) file.Write('"');
+                file.Write(content);
+                if (quote) file.Write('"');
+            }
+
+            void EndRow() {
+                file.WriteLine();
+                first = true;
             }
         }
     }

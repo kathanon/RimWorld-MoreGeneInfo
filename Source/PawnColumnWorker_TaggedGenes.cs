@@ -12,7 +12,7 @@ public class PawnColumnWorker_TaggedGenes : PawnColumnWorker {
 
 
     public override void DoCell(Rect rect, Pawn pawn, PawnTable table) 
-        => GeneTags.DoReverseIcons(rect, pawn);
+        => GeneTags.DoReverseIcons(rect, pawn, table.PawnsListForReading);
 
     public override int GetMinCellHeight(Pawn pawn) 
         => GeneTags.ReverseHeightI;
